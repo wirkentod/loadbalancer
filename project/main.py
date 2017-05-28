@@ -147,11 +147,11 @@ if __name__ == '__main__':
 
 	#Se crean flow entries en funcion a las subRedes que hay en el archivo = subRedes.csv
 	#crearFlowEntriesPorSubNet("subRedes")
-
-	while 1 == 1:
-		s.enter(3,1,accionCadaXSegundos,())
+	print "hola"
+	#while 1 == 1:
+	#	s.enter(3,1,accionCadaXSegundos,())
   		#s.enter(20,1,guardarInformacionDicts_Load_Net,())
-		s.run()
+	#	s.run()
 		    	
 
 
