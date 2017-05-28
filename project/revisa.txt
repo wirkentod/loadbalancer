@@ -1,0 +1,21 @@
+ cookie=0xa0000064bba265, duration=32.608s, table=0, n_packets=0, n_bytes=0, idle_age=32, priority=10,ip,nw_src=192.168.3.0/27 actions=output:5
+ 
+ 
+ cookie=0x20000004000000, duration=2.106s, table=0, n_packets=2, n_bytes=196, idle_timeout=5, idle_age=0, priority=1,ip,in_port=4,dl_src=fa:16:3e:00:30:99,dl_dst=fa:16:3e:00:62:b8,nw_src=192.168.1.12,nw_dst=192.168.1.11 actions=output:6
+ cookie=0x20000005000000, duration=1.124s, table=0, n_packets=2, n_bytes=196, idle_timeout=5, idle_age=0, priority=1,ip,in_port=6,dl_src=fa:16:3e:00:62:b8,dl_dst=fa:16:3e:00:30:99,nw_src=192.168.1.11,nw_dst=192.168.1.12 actions=output:4
+ 
+ 
+ 
+ cookie=0x0, duration=8637.668s, table=0, n_packets=2724, n_bytes=163592, idle_age=2, priority=0 actions=CONTROLLER:65535
+ 
+ 
+ 
+ curl http://10.20.10.28:8080/wm/core/controller/switches/
+ 
+ 
+ curl http://10.20.10.28:8080/wm/core/counter/OFSwitchManager/all/json
+ curl http://10.20.10.28:8080/wm/core/switch/00:00:96:cd:93:4c:43:41/flow/json  
+ curl http://10.20.10.28:8080/wm/staticflowpusher/list/00:00:96:cd:93:4c:43:41/json 
+ 
+ curl -X POST http://10.20.10.28:8080/wm/statistics/config/enable/json
+ curl http://10.20.10.28:8080/wm/statistics/bandwidth/00:00:96:cd:93:4c:43:41/6/json
