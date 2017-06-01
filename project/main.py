@@ -11,9 +11,9 @@ from lib import PuertoFirewall
 
 #iniciamos las variables globales
 
-ip_controller = '10.20.10.33'
-ovs_intranet_DPID = "00:00:96:a6:c9:d8:d2:40"
-ovs_extranet_DPID = "00:00:ce:19:09:f9:17:40"
+ip_controller = '10.20.10.26'
+ovs_intranet_DPID = "00:00:5a:9d:cb:0b:01:4b"
+ovs_extranet_DPID = "00:00:d2:d8:cc:51:e3:4f"
 
 #Definimos los puertos correspondientes a cada Firewall
 sensor1 = PuertoFirewall('6','3','sensor1')
