@@ -78,6 +78,14 @@ def medirBps_Ovs(puerto, direction, ovs_PID):
 	key = 'bits-per-second-' + direction
 	return j[0][str(key)]
 
+def medirFlows_Ovs(ovs_PID):
+	rest = RestApiFloodlight(ip_controller)
+	data = rest.measureFlows(ovs_PID)
+	j = json.loads(data)
+	#key = 'bits-per-second-' + direction
+	#return j[0][str(key)]
+	return j
+
 def guardarInformacionDicts_Load_Net():
 	for puerto in arreglo_puertos_Firewall:
                 load_inst_puerto_intranet = medirBps_Ovs(puerto.interfaz_puerto_ovs_intranet, 'tx', ovs_intranet_DPID)
@@ -149,7 +157,8 @@ if __name__ == '__main__':
 	#crearFlowEntriesPorSubNet("subRedes")
 	print "hola2"
 	mide = medirBps_Ovs('3', 'tx', '00:00:5a:9d:cb:0b:01:4b')
-	print mide
+	flows = medirFlows_Ovs('00:00:5a:9d:cb:0b:01:4b')
+	print flows
 	#while 1 == 1:
 	#	s.enter(3,1,accionCadaXSegundos,())
   		#s.enter(20,1,guardarInformacionDicts_Load_Net,())
