@@ -76,7 +76,8 @@ def medirBps_Ovs(puerto, direction, ovs_PID):
 	data = rest.measureLoad(ovs_PID, str(puerto))
 	j = json.loads(data)
 	key = 'bits-per-second-' + direction
-	return j[0][str(key)]
+	#return j[0][str(key)]
+	return j
 
 def medirFlows_Ovs(ovs_PID):
 	rest = RestApiFloodlight(ip_controller)
@@ -158,6 +159,8 @@ if __name__ == '__main__':
 	print "hola2"
 	mide = medirBps_Ovs('3', 'tx', '00:00:5a:9d:cb:0b:01:4b')
 	flows = medirFlows_Ovs('00:00:5a:9d:cb:0b:01:4b')
+	print mide
+	print "----"
 	print flows
 	#while 1 == 1:
 	#	s.enter(3,1,accionCadaXSegundos,())
