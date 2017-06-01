@@ -148,7 +148,7 @@ if __name__ == '__main__':
 	#Se crean flow entries en funcion a las subRedes que hay en el archivo = subRedes.csv
 	#crearFlowEntriesPorSubNet("subRedes")
 	print "hola2"
-	mide = medirBps_Ovs(3, 'tx', '00:00:5a:9d:cb:0b:01:4b')
+	mide = medirBps_Ovs('3', 'tx', '00:00:5a:9d:cb:0b:01:4b')
 	print mide
 	#while 1 == 1:
 	#	s.enter(3,1,accionCadaXSegundos,())
