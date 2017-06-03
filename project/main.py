@@ -33,7 +33,7 @@ for puerto in arreglo_puertos_Firewall:
 	dict_load_intranet[str(puerto.puertoFirewallNombre)] = []
 	dict_load_extranet[str(puerto.puertoFirewallNombre)] = []
 #Definimos los valores umbrales """
-umbral_HandOff = 26100 #bps
+umbral_HandOff = 1000 #bps
 
 
 #pusher = StaticEntryPusher(ip_controller)
