@@ -15,24 +15,25 @@ ip_controller = '10.20.10.26'
 ovs_intranet_DPID = "00:00:5a:9d:cb:0b:01:4b"
 ovs_extranet_DPID = "00:00:d2:d8:cc:51:e3:4f"
 
-#Definimos los puertos correspondientes a cada Firewall
-sensor1 = PuertoFirewall('6','3','sensor1')
-sensor2 = PuertoFirewall('5','6','sensor2')
-sensor3 = PuertoFirewall('3','1','sensor3')
-#Sensor Spare
-sensor4 = PuertoFirewall('7','5','sensor4')
-arreglo_puertos_Firewall = [sensor1,sensor2,sensor3]
-arreglo_puerto_elegido_HandOff = []
-arreglo_puerto_elegido_enProceso_HandOff = []
+#Definimos las ramas correspondientes a cada Firewall
+rama1 = RamaFirewall('3','1','rama1','NORMAL','ESTABLE')
+rama2 = RamaFirewall('2','4','rama2','NORMAL','ESTABLE')
+rama3 = RamaFirewall('6','5','rama3','NORMAL','ESTABLE')
+#Rama Sensor Spare
+rama4 = RamaFirewall('1','6','rama4','NORMAL','ESTABLE')
+
+arreglo_ramas_Firewall = [rama1,rama2,rama3]
+arreglo_rama_HandOff_src = []
+arreglo_rama_HandOff_dst = []
 
 #Definimos los diccionarios donde se guardan el historial de carga de cada puerto de los ovs
 #dict_load_net = {'sensor1':[], 'sensor2':[], 'sensor3':[]}
-dict_load_intranet = {}
+"""dict_load_intranet = {}
 dict_load_extranet = {}
 for puerto in arreglo_puertos_Firewall:
 	dict_load_intranet[str(puerto.puertoFirewallNombre)] = []
 	dict_load_extranet[str(puerto.puertoFirewallNombre)] = []
-#Definimos los valores umbrales
+#Definimos los valores umbrales """
 umbral_HandOff = 26100 #bps
 
 
@@ -98,7 +99,7 @@ s = sched.scheduler(time.time, time.sleep)
 
 #logsLoadSensors = sched.scheduler(time.time, time.sleep)
 
-def accionCadaXSegundos():
+def accionCadaXSegundos1():
 	
 	#Definimos los posibles puertos en estado HandOff
 	posible_puerto_HandOff = []
@@ -151,82 +152,16 @@ def accionCadaXSegundos():
                 print "puerto Nombre: %s| carga_ovs_intranet: %s| carga_ovs_extranet: %s| carga_representaiva: %s " %(puerto.puertoFirewallNombre, puerto.carga_ovs_intranet, puerto.carga_ovs_extranet, puerto.carga_representativa())
 	
 	#print dict_load_intranet
+	
+def accionCadaXSegundos():
+	
+	print arreglo_ramas_Firewall
+	print time.time()
 
 if __name__ == '__main__':
 
-	#Se crean flow entries en funcion a las subRedes que hay en el archivo = subRedes.csv
-	#crearFlowEntriesPorSubNet("subRedes")
-	print "hola2"
-	mide = medirBps_Ovs('3', 'tx', '00:00:5a:9d:cb:0b:01:4b')
-	flows = medirFlows_Ovs('00:00:5a:9d:cb:0b:01:4b')
-	print flows
-	#while 1 == 1:
-	#	s.enter(3,1,accionCadaXSegundos,())
-  		#s.enter(20,1,guardarInformacionDicts_Load_Net,())
-	#	s.run()
-		    	
-
-
-	#puerto = '2'
-	#load = medirBps_Ovs(puerto, 'tx', ovs_intranet_DPID)
-	#print "load:"
-	#print load
-
-	"""pusher = StaticEntryPusher(ip_controller)
-	flowSubNet_intranet = {
-		"switch":"00:00:96:a6:c9:d8:d2:40",
-		"name":"subred1",
-		"priority":"10",
-		"eth_type ":"0x0800",
-		"ipv4_src":"192.168.1.0/27",
-		"active":"true",
-		"actions":"output=5" 
-	}
-		
-	flowSubNet_extranet = {
-		"switch":"00:00:ce:19:09:f9:17:40",
-		"name":"subred1",
-		"priority":"10",
-		"eth_type ":"0x0800",
-		"ipv4_dst":"192.168.1.0/27",
-		"active":"true",
-		"actions":"output=3" 
-	}"""
-	
-	#pusher.set(flowSubNet_intranet)
-	#pusher.set(flowSubNet_extranet)
-
-	
-	
-	#for puerto in arreglo_puertos_Firewall:
-	#	print puerto.interfaz_puerto_ovs_intranet
-	
-	
-	"""pusher = StaticEntryPusher(ip_controller)
-	
-	flowSubNet1 = {
-    		'switch':ovs_intranet_DPID,
-    		"name":"flow_subnet_1",
-    		"priority":"10",
-		"eth_type ":"0x0800",
-    		"ipv4_src":"192.168.3.0/27",
-    		"active":"true",
-    		"actions":"output=6"
-    	}"""
-	
-
-	#rest = RestApiFloodlight(ip_controller)
-	#data = rest.measureLoad(ovs_intranet_DPID, str(2))
-	#j = json.loads(data)
-	#print j[0]['bits-per-second-tx']
-	
-	#print "Entra:"
-	#print str(data)
-	#pusher.remove(flowSubNet1)
-	
-	#pusher.set(flowEntry1) 
-	#pusher.remove(flow1)
-	#pusher.set(flow1)
-	#pusher.set(flow2)
+	while 1 == 1:
+		s.enter(2,1,accionCadaXSegundos,())
+  		s.run()
 	
 	
