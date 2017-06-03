@@ -168,7 +168,7 @@ def accionCadaXSegundos():
 			if not rama in arreglo_rama_HandOff_src :
 				arreglo_rama_HandOff_src.append(rama)
 		else :
-			#Rama en estado estable
+			rama.flagtmp = 'ESTABLE'
 			if not rama in arreglo_rama_HandOff_dst :
 				arreglo_rama_HandOff_dst.append(rama)
 		print "Rama Nombre: %s| carga_representativa: %s| Rama estado: %s| Rama flagtmp: %s " %(rama.ramaFirewallNombre, rama.carga_representativa(), rama.estado, rama.flagtmp)
