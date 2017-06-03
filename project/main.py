@@ -177,9 +177,20 @@ def accionCadaXSegundos():
 	print time.time()
 
 if __name__ == '__main__':
-
-	while 1 == 1:
-		s.enter(2,1,accionCadaXSegundos,())
-  		s.run()
+	pusher = StaticEntryPusher(ip_controller)
+	flow_debug = {
+		"switch":ovs_intranet_DPID,
+		"name":"subRed_1",
+		"priority":"10",
+		"eth_type ":"0x0800",
+		"ipv4_src":"192.168.1.0/27"
+		"active":"true",
+		"in_port":"4",
+		"actions":"output=2"
+	}
+	pusher.set(flow_debug)
+	#while 1 == 1:
+	#	s.enter(2,1,accionCadaXSegundos,())
+  	#	s.run()
 	
 	
