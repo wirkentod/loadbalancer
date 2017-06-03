@@ -183,7 +183,7 @@ if __name__ == '__main__':
 		"name":"subRed_1",
 		"priority":"10",
 		"eth_type ":"0x0800",
-		"ipv4_src":"192.168.1.0/27"
+		"ipv4_src":"192.168.1.0/27",
 		"active":"true",
 		"in_port":"4",
 		"actions":"output=2"
