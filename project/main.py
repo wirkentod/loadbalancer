@@ -154,7 +154,25 @@ def accionCadaXSegundos1():
 	
 def accionCadaXSegundos():
 	
-	print arreglo_ramas_Firewall
+	#Medicion en cada rama
+	for rama in arreglo_ramas_Firewall:
+		load_inst_puerto_intranet = medirBps_Ovs(rama.interfaz_puerto_ovs_intranet, 'tx', ovs_intranet_DPID)
+		load_inst_puerto_extranet = medirBps_Ovs(rama.interfaz_puerto_ovs_extranet, 'tx', ovs_extranet_DPID)
+		rama.carga_ovs_intranet = load_inst_puerto_intranet  
+		rama.carga_ovs_extranet = load_inst_puerto_extranet
+		carga_representativa = rama.carga_representativa()
+		
+		#Si pasa el umbral
+		if float(carga_representativa) > float(umbral_HandOff):
+			rama.flagtmp = 'INESTABLE'
+			if not rama in arreglo_rama_HandOff_src :
+				arreglo_rama_HandOff_src.append(rama)
+		else :
+			#Rama en estado estable
+			if not rama in arreglo_rama_HandOff_dst :
+				arreglo_rama_HandOff_dst.append(rama)
+	
+	
 	print time.time()
 
 if __name__ == '__main__':
