@@ -56,12 +56,11 @@ def crearFlowEntriesPorSubNet(fileName):
 	i = 0
 	cantidadFirewalls = len(arreglo_ramas_Firewall)
 	for subRedName, prefijo in csv.reader(open('./subnets/'+str(fileName)+'.csv')):
+		indice = i % cantidadFirewalls
 		#Inicializamos las SubRedes a cada Rama
 		sub_red = SubRed(str(subRedName),str(prefijo),0,0,0,0,0)
 		arreglo_ramas_Firewall[indice].SubRedes.append(sub_red)
-		
-		indice = i % cantidadFirewalls
-		
+		#Creamos las reglas por cada SubRed
 		flowSubNet_intranet = {
 			'switch':ovs_intranet_DPID,
 			"name":str(subRedName) + "_intranet",
