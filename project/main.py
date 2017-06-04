@@ -207,6 +207,7 @@ def accionCadaXSegundos():
 
 if __name__ == '__main__':
 	crearFlowEntriesPorSubNet("subRedes")
+	print "holi"
 	#while 1 == 1:
 	#	s.enter(2,1,accionCadaXSegundos,())
   	#	s.run()
