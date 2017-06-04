@@ -25,14 +25,6 @@ arreglo_ramas_Firewall = [rama1,rama2,rama3]
 arreglo_rama_HandOff_src = []
 arreglo_rama_HandOff_dst = []
 
-#Definimos los diccionarios donde se guardan el historial de carga de cada puerto de los ovs
-#dict_load_net = {'sensor1':[], 'sensor2':[], 'sensor3':[]}
-"""dict_load_intranet = {}
-dict_load_extranet = {}
-for puerto in arreglo_puertos_Firewall:
-	dict_load_intranet[str(puerto.puertoFirewallNombre)] = []
-	dict_load_extranet[str(puerto.puertoFirewallNombre)] = []
-#Definimos los valores umbrales """
 umbral_HandOff = 1000 #bps
 
 
