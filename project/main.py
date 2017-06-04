@@ -53,7 +53,7 @@ def crearFlowEntriesPorSubNet(fileName):
 			"ipv4_src":str(prefijo),
 			"active":"true",
 			"in_port":"4",
-			"actions":"output=2"
+			"actions":"output=" + str(arreglo_ramas_Firewall[indice].interfaz_puerto_ovs_intranet)
 			}
 
 		flowSubNet_extranet = {
@@ -65,7 +65,7 @@ def crearFlowEntriesPorSubNet(fileName):
 			"ipv4_dst":str(prefijo),
 			"active":"true",
 			"in_port":"4",
-			"actions":"output=2"
+			"actions":"output=" + str(arreglo_ramas_Firewall[indice].interfaz_puerto_ovs_extranet)
 			}
 
 		pusher.set(flowSubNet_intranet)
