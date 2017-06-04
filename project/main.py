@@ -16,11 +16,11 @@ ovs_intranet_DPID = "00:00:5a:9d:cb:0b:01:4b"
 ovs_extranet_DPID = "00:00:d2:d8:cc:51:e3:4f"
 
 #Definimos las ramas correspondientes a cada Firewall
-rama1 = RamaFirewall('3','1','rama1','NORMAL','ESTABLE')
-rama2 = RamaFirewall('2','4','rama2','NORMAL','ESTABLE')
-rama3 = RamaFirewall('6','5','rama3','NORMAL','ESTABLE')
+rama1 = RamaFirewall('3','1','rama1','NORMAL','ESTABLE',[])
+rama2 = RamaFirewall('2','4','rama2','NORMAL','ESTABLE',[])
+rama3 = RamaFirewall('6','5','rama3','NORMAL','ESTABLE',[])
 #Rama Sensor Spare
-rama4 = RamaFirewall('1','6','rama4','NORMAL','ESTABLE')
+rama4 = RamaFirewall('1','6','rama4','NORMAL','ESTABLE',[])
 
 arreglo_ramas_Firewall = [rama1,rama2,rama3]
 arreglo_rama_HandOff_src = []
