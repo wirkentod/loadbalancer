@@ -36,14 +36,14 @@ for puerto in arreglo_puertos_Firewall:
 umbral_HandOff = 1000 #bps
 
 
-#pusher = StaticEntryPusher(ip_controller)
+pusher = StaticEntryPusher(ip_controller)
 
 def crearFlowEntriesPorSubNet(fileName):
 	#Cargamos las subnet en el diccionario subRedes = {"subRedName":"prefijo"}
 	#pusher = StaticEntryPusher(ip_controller)
 	subRedes = {}
 	i = 0
-	cantidadFirewalls = len(arreglo_puertos_Firewall)
+	cantidadFirewalls = len(arreglo_ramas_Firewall)
 	for subRedName, prefijo in csv.reader(open('./subnets/'+str(fileName)+'.csv')):
 		indice = i % cantidadFirewalls
 		subRedes[str(subRedName)] = str(prefijo)
@@ -207,7 +207,6 @@ def accionCadaXSegundos():
 
 if __name__ == '__main__':
 	crearFlowEntriesPorSubNet("subRedes")
-	print "holi"
 	#while 1 == 1:
 	#	s.enter(2,1,accionCadaXSegundos,())
   	#	s.run()
