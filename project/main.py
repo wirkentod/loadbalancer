@@ -39,6 +39,27 @@ umbral_HandOff = 1000 #bps
 pusher = StaticEntryPusher(ip_controller)
 
 def crearFlowEntriesPorSubNet(fileName):
+	#Creamos los flow entries por defecto
+	flow_Default_SubNet_intranet = {
+			'switch':ovs_intranet_DPID,
+			"name": "default_intranet",
+			"cookie":"0",
+			"priority":"0",
+			"active":"true",
+			"actions":"output=4"
+			}
+	flow_Default_SubNet_extranet = {
+			'switch':ovs_extranet_DPID,
+			"name": "default_extranet",
+			"cookie":"0",
+			"priority":"0",
+			"active":"true",
+			"actions":"output=2"
+			}
+	pusher.set(flow_Default_SubNet_intranet)
+	pusher.set(flow_Default_SubNet_extranet)
+	
+	#Asignamos las SubRedes a cada rama
 	i = 0
 	cantidadFirewalls = len(arreglo_ramas_Firewall)
 	for subRedName, prefijo in csv.reader(open('./subnets/'+str(fileName)+'.csv')):
@@ -178,6 +199,7 @@ def accionCadaXSegundos():
 	print time.time()
 
 if __name__ == '__main__':
+	#Creacion de Flow entries en funcion a sub-redes pre-establecidas
 	crearFlowEntriesPorSubNet("subRedes")
 	#while 1 == 1:
 	#	s.enter(2,1,accionCadaXSegundos,())
