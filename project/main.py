@@ -23,6 +23,7 @@ rama3 = RamaFirewall('6','5','rama3','NORMAL','ESTABLE',[])
 rama4 = RamaFirewall('1','6','rama4','NORMAL','ESTABLE',[])
 
 arreglo_ramas_Firewall = [rama1,rama2,rama3]
+arreglo_SubRedes = []
 arreglo_rama_HandOff_src = []
 arreglo_rama_HandOff_dst = []
 
@@ -59,6 +60,7 @@ def crearFlowEntriesPorSubNet(fileName):
 		indice = i % cantidadFirewalls
 		#Inicializamos las SubRedes a cada Rama
 		sub_red = SubRed(str(subRedName),str(prefijo),0,0,0,0,0)
+		arreglo_SubRedes.append(sub_red)
 		arreglo_ramas_Firewall[indice].SubRedes.append(sub_red)
 		#Creamos las reglas por cada SubRed
 		flowSubNet_intranet = {
