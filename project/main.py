@@ -50,11 +50,11 @@ def crearFlowEntriesPorSubNet(fileName):
 		
 		flow1 = {
 			'switch':ovs_intranet_DPID,
-			"name":"flow_mod_1",
+			"name":str(subRedName),
 			"cookie":"0",
 			"priority":"10",
 			"eth_type ":"0x0800",
-			"ipv4_src":"192.168.1.32/27",
+			"ipv4_src":str(prefijo),
 			"active":"true",
 			"in_port":"4",
 			"actions":"output=2"
@@ -62,11 +62,11 @@ def crearFlowEntriesPorSubNet(fileName):
 
 		flow2 = {
 			'switch':ovs_extranet_DPID,
-			"name":"flow_mod_2",
+			"name":str(subRedName),
 			"cookie":"0",
 			"priority":"10",
 			"eth_type ":"0x0800",
-			"ipv4_dst":"192.168.1.32/27",
+			"ipv4_dst":str(prefijo),
 			"active":"true",
 			"in_port":"4",
 			"actions":"output=2"
