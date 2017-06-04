@@ -7,6 +7,7 @@ import time
 from lib import StaticEntryPusher
 from lib import RestApiFloodlight
 from lib import RamaFirewall
+from lib import SubRed
 
 #iniciamos las variables globales
 
@@ -192,7 +193,11 @@ def accionCadaXSegundos():
 
 if __name__ == '__main__':
 	#Creacion de Flow entries en funcion a sub-redes pre-establecidas
-	crearFlowEntriesPorSubNet("subRedes")
+	#crearFlowEntriesPorSubNet("subRedes")
+	sub_red_1 = SubRed('sub_red_1','192.168.1.0/255.255.255.224',0,0,0,0,0)
+	sub_red_2 = SubRed('sub_red_2','192.168.1.32/255.255.255.224',0,0,0,0,0)
+	print sub_red_1.nombre
+	
 	#while 1 == 1:
 	#	s.enter(2,1,accionCadaXSegundos,())
   	#	s.run()
