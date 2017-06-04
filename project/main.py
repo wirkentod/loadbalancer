@@ -56,6 +56,10 @@ def crearFlowEntriesPorSubNet(fileName):
 	i = 0
 	cantidadFirewalls = len(arreglo_ramas_Firewall)
 	for subRedName, prefijo in csv.reader(open('./subnets/'+str(fileName)+'.csv')):
+		#Inicializamos las SubRedes a cada Rama
+		sub_red = SubRed(str(subRedName),str(prefijo),0,0,0,0,0)
+		arreglo_ramas_Firewall[indice].SubRedes.append(sub_red)
+		
 		indice = i % cantidadFirewalls
 		
 		flowSubNet_intranet = {
@@ -193,10 +197,10 @@ def accionCadaXSegundos():
 
 if __name__ == '__main__':
 	#Creacion de Flow entries en funcion a sub-redes pre-establecidas
-	#crearFlowEntriesPorSubNet("subRedes")
-	sub_red_1 = SubRed('sub_red_1','192.168.1.0/255.255.255.224',0,0,0,0,0)
-	sub_red_2 = SubRed('sub_red_2','192.168.1.32/255.255.255.224',0,0,0,0,0)
-	print sub_red_1.nombre
+	crearFlowEntriesPorSubNet("subRedes")
+	#sub_red_1 = SubRed('sub_red_1','192.168.1.0/255.255.255.224',0,0,0,0,0)
+	#sub_red_2 = SubRed('sub_red_2','192.168.1.32/255.255.255.224',0,0,0,0,0)
+	#print sub_red_1.nombre
 	
 	#while 1 == 1:
 	#	s.enter(2,1,accionCadaXSegundos,())
