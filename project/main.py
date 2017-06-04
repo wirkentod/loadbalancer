@@ -54,7 +54,7 @@ def crearFlowEntriesPorSubNet(fileName):
 			"cookie":"0",
 			"priority":"10",
 			"eth_type ":"0x0800",
-			"ipv4_src":str(prefijo),
+			"ipv4_src":"192.168.1.32/27",
 			"active":"true",
 			"in_port":"4",
 			"actions":"output=2"
@@ -66,7 +66,7 @@ def crearFlowEntriesPorSubNet(fileName):
 			"cookie":"0",
 			"priority":"10",
 			"eth_type ":"0x0800",
-			"ipv4_dst":str(prefijo),
+			"ipv4_dst":"192.168.1.0/27",
 			"active":"true",
 			"in_port":"4",
 			"actions":"output=2"
