@@ -47,6 +47,35 @@ def crearFlowEntriesPorSubNet(fileName):
 	for subRedName, prefijo in csv.reader(open('./subnets/'+str(fileName)+'.csv')):
 		indice = i % cantidadFirewalls
 		subRedes[str(subRedName)] = str(prefijo)
+		
+		flow1 = {
+			'switch':ovs_intranet_DPID,
+			"name":"flow_mod_1",
+			"cookie":"0",
+			"priority":"10",
+			"eth_type ":"0x0800",
+			"ipv4_src":"192.168.1.32/27",
+			"active":"true",
+			"in_port":"4",
+			"actions":"output=2"
+			}
+
+		flow2 = {
+			'switch':ovs_extranet_DPID,
+			"name":"flow_mod_2",
+			"cookie":"0",
+			"priority":"10",
+			"eth_type ":"0x0800",
+			"ipv4_dst":"192.168.1.32/27",
+			"active":"true",
+			"in_port":"4",
+			"actions":"output=2"
+			}
+
+		pusher.set(flow1)
+		pusher.set(flow2)
+		
+		"""
 		flowSubNet_intranet = {
 			"switch":ovs_intranet_DPID,
 			"name":str(subRedName),
@@ -68,7 +97,7 @@ def crearFlowEntriesPorSubNet(fileName):
 		}
 		#pusher.set(flowSubNet_intranet)
 		pusher.set(flowSubNet_extranet)
-		pusher.set(flowSubNet_intranet)
+		pusher.set(flowSubNet_intranet)"""
 		i = i + 1	
 
 def medirBps_Ovs(puerto, direction, ovs_PID):
@@ -177,18 +206,7 @@ def accionCadaXSegundos():
 	print time.time()
 
 if __name__ == '__main__':
-	pusher = StaticEntryPusher(ip_controller)
-	flow_debug = {
-		"switch":ovs_intranet_DPID,
-		"name":"subRed_1",
-		"priority":"10",
-		"eth_type ":"0x0800",
-		"ipv4_src":"192.168.1.0/27",
-		"active":"true",
-		"in_port":"4",
-		"actions":"output=2"
-	}
-	pusher.set(flow_debug)
+	crearFlowEntriesPorSubNet("subRedes")
 	#while 1 == 1:
 	#	s.enter(2,1,accionCadaXSegundos,())
   	#	s.run()
