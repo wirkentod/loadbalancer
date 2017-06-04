@@ -39,65 +39,37 @@ umbral_HandOff = 1000 #bps
 pusher = StaticEntryPusher(ip_controller)
 
 def crearFlowEntriesPorSubNet(fileName):
-	#Cargamos las subnet en el diccionario subRedes = {"subRedName":"prefijo"}
-	#pusher = StaticEntryPusher(ip_controller)
-	subRedes = {}
 	i = 0
 	cantidadFirewalls = len(arreglo_ramas_Firewall)
 	for subRedName, prefijo in csv.reader(open('./subnets/'+str(fileName)+'.csv')):
 		indice = i % cantidadFirewalls
-		subRedes[str(subRedName)] = str(prefijo)
 		
-		flow1 = {
-			'switch':ovs_intranet_DPID,
-			"name":str(subRedName),
-			"cookie":"0",
-			"priority":"10",
-			"eth_type ":"0x0800",
-			"ipv4_src":"192.168.1.32/27",
-			"active":"true",
-			"in_port":"4",
-			"actions":"output=2"
-			}
-
-		flow2 = {
-			'switch':ovs_extranet_DPID,
-			"name":str(subRedName),
-			"cookie":"0",
-			"priority":"10",
-			"eth_type ":"0x0800",
-			"ipv4_dst":"192.168.1.0/27",
-			"active":"true",
-			"in_port":"4",
-			"actions":"output=2"
-			}
-
-		pusher.set(flow1)
-		pusher.set(flow2)
-		
-		"""
 		flowSubNet_intranet = {
-			"switch":ovs_intranet_DPID,
-			"name":str(subRedName),
+			'switch':ovs_intranet_DPID,
+			"name":str(subRedName) + "_intranet",
+			"cookie":"0",
 			"priority":"10",
 			"eth_type ":"0x0800",
 			"ipv4_src":str(prefijo),
 			"active":"true",
-			"actions":"output=" + str(arreglo_puertos_Firewall[indice].interfaz_puerto_ovs_intranet)
-		}
-	   
+			"in_port":"4",
+			"actions":"output=2"
+			}
+
 		flowSubNet_extranet = {
-			"switch":ovs_extranet_DPID,
-			"name":str(subRedName),
+			'switch':ovs_extranet_DPID,
+			"name":str(subRedName) + "_extranet",
+			"cookie":"0",
 			"priority":"10",
 			"eth_type ":"0x0800",
 			"ipv4_dst":str(prefijo),
 			"active":"true",
-			"actions":"output=" + str(arreglo_puertos_Firewall[indice].interfaz_puerto_ovs_extranet)
-		}
-		#pusher.set(flowSubNet_intranet)
+			"in_port":"4",
+			"actions":"output=2"
+			}
+
+		pusher.set(flowSubNet_intranet)
 		pusher.set(flowSubNet_extranet)
-		pusher.set(flowSubNet_intranet)"""
 		i = i + 1	
 
 def medirBps_Ovs(puerto, direction, ovs_PID):
