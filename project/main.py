@@ -103,78 +103,34 @@ def medirFlows_Ovs(ovs_PID):
 	rest = RestApiFloodlight(ip_controller)
 	data = rest.measureFlows(ovs_PID)
 	j = json.loads(data)
-	#key = 'bits-per-second-' + direction
-	#return j[0][str(key)]
-	return j
+	arr_flows_PID = j['flows']
+	dict_Flows = {}
+	#transformamos la data en el json a un diccionario
+	for flow in arr_flows_PID:
+		try:
+			duration_sec = float(flow['duration_sec'])
+			duration_nsec = float(flow['duration_nsec'])
+			duration = duration_sec + (duration_nsec/1e9)
+			#values = [packet_count, byte_count, duration]
+			values = [int(flow['packet_count']), int(flow['byte_count']), duration]
+			new_flow = {str(flow['match']['ipv4_src']): values}
+			dict_Flows.update(new_flow)
+		except KeyError, e:
+			pass
+	#print dict_Flows
+	return dict_Flows
 
 def guardarInformacionDicts_Load_Net():
 	for puerto in arreglo_puertos_Firewall:
                 load_inst_puerto_intranet = medirBps_Ovs(puerto.interfaz_puerto_ovs_intranet, 'tx', ovs_intranet_DPID)
                 puerto.carga_ovs_intranet = load_inst_puerto_intranet
                 dict_load_intranet[str(puerto.puertoFirewallNombre)].append(float(load_inst_puerto_intranet))
-               
-#definimos el trigerTime 1
+
+#scheduler		
 s = sched.scheduler(time.time, time.sleep)
-
-#logsLoadSensors = sched.scheduler(time.time, time.sleep)
-
-def accionCadaXSegundos1():
-	
-	#Definimos los posibles puertos en estado HandOff
-	posible_puerto_HandOff = []
-	
-	for puerto in arreglo_puertos_Firewall:
-		load_inst_puerto_intranet = medirBps_Ovs(puerto.interfaz_puerto_ovs_intranet, 'tx', ovs_intranet_DPID)
-		load_inst_puerto_extranet = medirBps_Ovs(puerto.interfaz_puerto_ovs_extranet, 'tx', ovs_extranet_DPID)
-		puerto.carga_ovs_intranet = load_inst_puerto_intranet  
-		puerto.carga_ovs_extranet = load_inst_puerto_extranet
-		carga_representativa = puerto.carga_representativa()
-		
-		if float(carga_representativa) > float(umbral_HandOff):
-			posible_puerto_HandOff.append(puerto)
-	
-	#Si un puerto en proceso HandOff no supera el umbral se procede a eliminar el evento Comenzar_Evento_HandOff
-	if arreglo_puerto_elegido_enProceso_HandOff != [] :
-		for puerto in arreglo_puerto_elegido_enProceso_HandOff :
-			if not puerto in posible_puerto_HandOff :
-				print "Eliminamos el proceso HandOff correspondiente al puerto : %s" %(puerto.puertoFirewallNombre)	
-	
-	#Analisis de los posibles puertos que ingresan al Evento Comenzar_Evento_HandOff
-	if len(posible_puerto_HandOff) == len(arreglo_puertos_Firewall) :
-		print "Ingresar  FWs, todos estan ocupados"
-		i = 1
-	elif len(posible_puerto_HandOff) == 0 :
-		print "No se encuentra algun puerto que supere el umbral"
-		j = 1
-	else :
-		#Sort de arreglo de forma descendente
-		arreglo_ordenador_por_carga_descendente = sorted(posible_puerto_HandOff, key=lambda puerto: puerto.carga_representativa(), reverse=True) 
-		for puerto in arreglo_ordenador_por_carga_descendente:
-			if not puerto in arreglo_puerto_elegido_enProceso_HandOff :
-				puertoElegido_HandOff = puerto
-				#Comenzar_Evento_HandOff(puertoElegido_HandOff)
-				arreglo_puerto_elegido_enProceso_HandOff.append(puertoElegido_HandOff)
-				print puertoElegido_HandOff.puertoFirewallNombre
-				break	
-	
-
-
-		#print "p_intranet: %s | p_extranet: %s | carga_representativa: %s" %(load_inst_puerto_intranet,load_inst_puerto_extranet,carga_representativa)
-		#dict_load_intranet[str(puerto.puertoFirewallNombre)].append(float(load_inst_puerto_intranet))
-		#print puerto.carga_ovs_intranet
-	print "---------------------------------"
-	print "posible_puerto_HandOff: "
-	for puerto in posible_puerto_HandOff:
-		print "puerto Nombre: %s| carga_ovs_intranet: %s| carga_ovs_extranet: %s| carga_representaiva: %s " %(puerto.puertoFirewallNombre, puerto.carga_ovs_intranet, puerto.carga_ovs_extranet, puerto.carga_representativa())
-	print "arreglo_puerto_elegido_enProceso_HandOff:"
-	for puerto in arreglo_puerto_elegido_enProceso_HandOff:
-                print "puerto Nombre: %s| carga_ovs_intranet: %s| carga_ovs_extranet: %s| carga_representaiva: %s " %(puerto.puertoFirewallNombre, puerto.carga_ovs_intranet, puerto.carga_ovs_extranet, puerto.carga_representativa())
-	
-	#print dict_load_intranet
-	
 def accionCadaXSegundos():
 	
-	#Medicion en cada rama
+	#Actualizamos las mediciones en cada Rama
 	for rama in arreglo_ramas_Firewall:
 		load_inst_puerto_intranet = medirBps_Ovs(rama.interfaz_puerto_ovs_intranet, 'tx', ovs_intranet_DPID)
 		load_inst_puerto_extranet = medirBps_Ovs(rama.interfaz_puerto_ovs_extranet, 'tx', ovs_extranet_DPID)
@@ -191,7 +147,20 @@ def accionCadaXSegundos():
 			rama.flagtmp = 'ESTABLE'
 			if not rama in arreglo_rama_HandOff_dst :
 				arreglo_rama_HandOff_dst.append(rama)
-		print "Rama Nombre: %s| carga_representativa: %s| Rama estado: %s| Rama flagtmp: %s " %(rama.ramaFirewallNombre, rama.carga_representativa(), rama.estado, rama.flagtmp)
+		print "Rama Nombre: %s| carga_representativa: %s| Rama estado: %s| Rama flagtmp: %s | SubRedes: %s " %(rama.ramaFirewallNombre, rama.carga_representativa(), rama.estado, rama.flagtmp, rama.SubRedes)
+	
+	#Actualizamos las mediciones en cada SubRed
+	dict_Flows = medirFlows_Ovs(ovs_intranet_DPID)
+	for subred in arreglo_SubRedes :
+		#values = [packet_count,byte_count,duration]
+		values = dict_Flows.get(str(subred.ip_mask))
+		subred.pps = (values[0] - subred.packetCount_old ) / (values[2] - subred.duration_old)
+		subred.bps = (values[1] - subred.bytesConsumidos_old ) * 8 / (values[2] - subred.duration_old)
+		subred.packetCount_old =  values[0]
+		subred.bytesConsumidos_old = values[1]
+		subred.duration_old = values[2]
+		
+		print "SubRed_Name: %s | key: %s | pps: %s | bps: %s " %(subred.nombre,subred.ip_mask,subred.pps,subred.bps)
 	
 	
 	print time.time()
@@ -203,8 +172,8 @@ if __name__ == '__main__':
 	#sub_red_2 = SubRed('sub_red_2','192.168.1.32/255.255.255.224',0,0,0,0,0)
 	#print sub_red_1.nombre
 	
-	#while 1 == 1:
-	#	s.enter(2,1,accionCadaXSegundos,())
-  	#	s.run()
+	while 1 == 1:
+		s.enter(2,1,accionCadaXSegundos,())
+  		s.run()
 	
 	
