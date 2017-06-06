@@ -11,16 +11,16 @@ from lib import SubRed
 
 #iniciamos las variables globales
 
-ip_controller = '10.20.10.26'
-ovs_intranet_DPID = "00:00:5a:9d:cb:0b:01:4b"
-ovs_extranet_DPID = "00:00:d2:d8:cc:51:e3:4f"
+ip_controller = '10.20.10.23'
+ovs_intranet_DPID = "00:00:a2:f2:4a:57:72:40"
+ovs_extranet_DPID = "00:00:02:79:64:ed:5d:45"
 
 #Definimos las ramas correspondientes a cada Firewall
-rama1 = RamaFirewall('3','1','rama1','NORMAL','ESTABLE',[])
-rama2 = RamaFirewall('2','4','rama2','NORMAL','ESTABLE',[])
-rama3 = RamaFirewall('6','5','rama3','NORMAL','ESTABLE',[])
+rama1 = RamaFirewall('7','5','rama1','NORMAL','ESTABLE',[])
+rama2 = RamaFirewall('1','2','rama2','NORMAL','ESTABLE',[])
+rama3 = RamaFirewall('5','1','rama3','NORMAL','ESTABLE',[])
 #Rama Sensor Spare
-rama4 = RamaFirewall('1','6','rama4','NORMAL','ESTABLE',[])
+rama4 = RamaFirewall('3','3','rama4','NORMAL','ESTABLE',[])
 
 arreglo_ramas_Firewall = [rama1,rama2,rama3]
 arreglo_SubRedes = []
@@ -40,7 +40,7 @@ def crearFlowEntriesPorSubNet(fileName):
 			"cookie":"0",
 			"priority":"0",
 			"active":"true",
-			"actions":"output=4"
+			"actions":"output=6"
 			}
 	flow_Default_SubNet_extranet = {
 			'switch':ovs_extranet_DPID,
@@ -48,7 +48,7 @@ def crearFlowEntriesPorSubNet(fileName):
 			"cookie":"0",
 			"priority":"0",
 			"active":"true",
-			"actions":"output=2"
+			"actions":"output=6"
 			}
 	pusher.set(flow_Default_SubNet_intranet)
 	pusher.set(flow_Default_SubNet_extranet)
@@ -71,7 +71,7 @@ def crearFlowEntriesPorSubNet(fileName):
 			"eth_type ":"0x0800",
 			"ipv4_src":str(prefijo),
 			"active":"true",
-			"in_port":"4",
+			"in_port":"6",
 			"actions":"output=" + str(arreglo_ramas_Firewall[indice].interfaz_puerto_ovs_intranet)
 			}
 
@@ -83,7 +83,7 @@ def crearFlowEntriesPorSubNet(fileName):
 			"eth_type ":"0x0800",
 			"ipv4_dst":str(prefijo),
 			"active":"true",
-			"in_port":"4",
+			"in_port":"6",
 			"actions":"output=" + str(arreglo_ramas_Firewall[indice].interfaz_puerto_ovs_extranet)
 			}
 
