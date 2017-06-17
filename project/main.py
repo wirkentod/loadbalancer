@@ -40,25 +40,25 @@ def crearGroupEntriesPorRama():
 	count = 1
 	for rama in arreglo_ramas_Firewall:
 		group_entry = {
-				"switch" : ovs_intranet_DPID,
-				"entry_type" : "group",
-				"name" : "group-mod-" + str(count),
-				"active" : "true",
-				"group_type" : "all",
-				"group_id" : str(count),
-				"group_buckets" : [ 
-					{
-						"bucket_id" : "1",
-						"bucket_watch_group" : "any",
-						"bucket_actions":"output=" + str(rama.interfaz_puerto_ovs_intranet)
-					},
-					{
-						"bucket_id" : "2", 
-						"bucket_watch_group" : "any", 
-						"bucket_actions" : "output=" + str(interfaz_puerto_sessions_actives)
-					}
-				]
+			"switch" : ovs_intranet_DPID,
+			"entry_type" : "group",
+			"name" : "group-mod-" + str(count),
+			"active" : "true",
+			"group_type" : "all",
+			"group_id" : str(count),
+			"group_buckets" : [ 
+				{
+					"bucket_id" : "1",
+					"bucket_watch_group" : "any",
+					"bucket_actions":"output=" + str(rama.interfaz_puerto_ovs_intranet)
+				},
+				{
+					"bucket_id" : "2", 
+					"bucket_watch_group" : "any", 
+					"bucket_actions" : "output=" + str(interfaz_puerto_sessions_actives)
 				}
+			]
+			}
 		count = count + 1
 		pusher.set(group_entry)
 		
