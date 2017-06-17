@@ -16,12 +16,15 @@ ip_controller = '10.20.10.23'
 ovs_intranet_DPID = "00:00:a2:f2:4a:57:72:40"
 ovs_extranet_DPID = "00:00:02:79:64:ed:5d:45"
 
+#Definimos la interfaz en el ovs_intranet donde se reenviaran los paquetes para la busqueda de sesiones activas
+interfaz_puerto_sessions_actives = '4';
+
 #Definimos las ramas correspondientes a cada Firewall
-rama1 = RamaFirewall('7','5','rama1','NORMAL','ESTABLE',[])
-rama2 = RamaFirewall('1','2','rama2','NORMAL','ESTABLE',[])
-rama3 = RamaFirewall('5','1','rama3','NORMAL','ESTABLE',[])
+rama1 = RamaFirewall('7','5','1','rama1','NORMAL','ESTABLE',[])
+rama2 = RamaFirewall('1','2','2','rama2','NORMAL','ESTABLE',[])
+rama3 = RamaFirewall('5','1','3','rama3','NORMAL','ESTABLE',[])
 #Rama Sensor Spare
-rama4 = RamaFirewall('3','3','rama4','NORMAL','ESTABLE',[])
+rama4 = RamaFirewall('3','3','4','rama4','NORMAL','ESTABLE',[])
 
 arreglo_ramas_Firewall = [rama1,rama2,rama3]
 arreglo_SubRedes = []
@@ -33,6 +36,32 @@ umbral_HandOff = 1000 #bps
 
 pusher = StaticEntryPusher(ip_controller)
 
+def crearGroupEntriesPorRama():
+	count = 1
+	for rama in arreglo_ramas_Firewall:
+		group_entry = {
+				"switch" : ovs_intranet_DPID,
+				"entry_type" : "group",
+				"name" : "group-mod-" + str(count),
+				"active" : "true",
+				"group_type" : "all",
+				"group_id" : str(count),
+				"group_buckets" : [ 
+					{
+						"bucket_id" : "1",
+						"bucket_watch_group" : "any",
+						"bucket_actions":"output=" + str(rama.interfaz_puerto_ovs_intranet)
+					},
+					{
+						"bucket_id" : "2", 
+						"bucket_watch_group" : "any", 
+						"bucket_actions" : "output=" + str(interfaz_puerto_sessions_actives)
+					}
+				]
+				}
+		count = count + 1
+		pusher.set(group_entry)
+		
 def crearFlowEntriesPorSubNet(fileName):
 	#Creamos los flow entries por defecto
 	flow_Default_SubNet_intranet = {
@@ -167,6 +196,8 @@ def accionCadaXSegundos():
 	print time.time()
 
 if __name__ == '__main__':
+	#Creacion de Group entries para realizar forwarding multicast para recolectar las sesiones activas por Sub Red
+	crearGroupEntriesPorRama()
 	#Creacion de Flow entries en funcion a sub-redes pre-establecidas
 	crearFlowEntriesPorSubNet("subRedes")
 	#sub_red_1 = SubRed('sub_red_1','192.168.1.0/255.255.255.224',0,0,0,0,0)
