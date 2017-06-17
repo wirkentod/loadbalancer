@@ -4,42 +4,42 @@ import json
 class SessionActives(object):
 
 	def __init__(self, server):
-        self.server = server
+        	self.server = server
 		
 	def startCollection(self, prefix_subred):
 		path = '/start?'+ prefix_subred
-        headers = {
+        	headers = {
 			'Content-type': 'application/json',
 			'Accept': 'application/json',
-		}
+			}
 		body = json.dumps("")
 		conn = httplib.HTTPConnection(self.server, 8080)
 		conn.request('GET', path)
 		response = conn.getresponse()
 		ret = (response.status, response.reason, response.read())
-        enviar = ret[2]
+        	enviar = ret[2]
 		#print ret[2]
-        conn.close()
-        return enviar
+        	conn.close()
+        	return enviar
 	
 	def getSessions(self, prefix_subred)
 		path = '/give?'+ prefix_subred
-        headers = {
+        	headers = {
 			'Content-type': 'application/json',
 			'Accept': 'application/json',
-		}
+			}
 		body = json.dumps("")
 		conn = httplib.HTTPConnection(self.server, 8080)
 		conn.request('GET', path)
 		response = conn.getresponse()
 		ret = (response.status, response.reason, response.read())
-        enviar = ret[2]
+        	enviar = ret[2]
 		conn.close()
         return enviar
 		
 	def stopSearch(self, prefix_subred)
 		path = '/kill?'+ prefix_subred
-        headers = {
+        	headers = {
 			'Content-type': 'application/json',
 			'Accept': 'application/json',
 		}
@@ -48,9 +48,9 @@ class SessionActives(object):
 		conn.request('GET', path)
 		response = conn.getresponse()
 		ret = (response.status, response.reason, response.read())
-        enviar = ret[2]
+        	enviar = ret[2]
 		conn.close()
-        return enviar
+        	return enviar
 		
 		
 		
