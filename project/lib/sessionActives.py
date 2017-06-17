@@ -11,7 +11,7 @@ class SessionActives(object):
         	headers = {
 			'Content-type': 'application/json',
 			'Accept': 'application/json',
-			}
+		}
 		body = json.dumps("")
 		conn = httplib.HTTPConnection(self.server, 8080)
 		conn.request('GET', path)
@@ -27,7 +27,7 @@ class SessionActives(object):
         	headers = {
 			'Content-type': 'application/json',
 			'Accept': 'application/json',
-			}
+		}
 		body = json.dumps("")
 		conn = httplib.HTTPConnection(self.server, 8080)
 		conn.request('GET', path)
