@@ -22,7 +22,7 @@ class SessionActives(object):
         	conn.close()
         	return enviar
 	
-	def getSessions(self, prefix_subred)
+	def getSessions(self, prefix_subred):
 		path = '/give?'+ prefix_subred
         	headers = {
 			'Content-type': 'application/json',
@@ -37,7 +37,7 @@ class SessionActives(object):
 		conn.close()
         return enviar
 		
-	def stopSearch(self, prefix_subred)
+	def stopSearch(self, prefix_subred):
 		path = '/kill?'+ prefix_subred
         	headers = {
 			'Content-type': 'application/json',
