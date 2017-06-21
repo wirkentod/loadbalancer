@@ -17,7 +17,10 @@ ovs_intranet_DPID = "00:00:ca:ef:d8:00:e7:4e"
 ovs_extranet_DPID = "00:00:ee:0b:8d:b4:21:49"
 
 #Definimos la interfaz en el ovs_intranet donde se reenviaran los paquetes para la busqueda de sesiones activas
-interfaz_puerto_sessions_actives = '6';
+interfaz_puerto_sessions_actives = '6'
+#Definimos las interfaces por defecto en caso los paquetes no pertenecen a ninguna subred
+interfaz_default_ovs_intranet = '7'
+interfaz_default_ovs_extranet = '5'
 
 #Definimos las ramas correspondientes a cada Firewall
 rama1 = RamaFirewall('2','2','1','rama1','NORMAL','ESTABLE',[])
@@ -70,7 +73,7 @@ def crearFlowEntriesPorSubNet(fileName):
 			"cookie":"0",
 			"priority":"0",
 			"active":"true",
-			"actions":"output=6"
+			"actions":"output=" + str(interfaz_default_ovs_intranet)
 			}
 	flow_Default_SubNet_extranet = {
 			'switch':ovs_extranet_DPID,
@@ -78,7 +81,7 @@ def crearFlowEntriesPorSubNet(fileName):
 			"cookie":"0",
 			"priority":"0",
 			"active":"true",
-			"actions":"output=6"
+			"actions":"output=" + str(interfaz_default_ovs_extranet)
 			}
 	pusher.set(flow_Default_SubNet_intranet)
 	pusher.set(flow_Default_SubNet_extranet)
