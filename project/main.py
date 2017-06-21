@@ -104,7 +104,7 @@ def crearFlowEntriesPorSubNet(fileName):
 			"eth_type ":"0x0800",
 			"ipv4_src":str(prefijo),
 			"active":"true",
-			"in_port":"6",
+			"in_port":str(interfaz_default_ovs_intranet),
 			"actions":"output=" + str(arreglo_ramas_Firewall[indice].interfaz_puerto_ovs_intranet)
 			}
 
@@ -116,7 +116,7 @@ def crearFlowEntriesPorSubNet(fileName):
 			"eth_type ":"0x0800",
 			"ipv4_dst":str(prefijo),
 			"active":"true",
-			"in_port":"6",
+			"in_port":str(interfaz_default_ovs_extranet),
 			"actions":"output=" + str(arreglo_ramas_Firewall[indice].interfaz_puerto_ovs_extranet)
 			}
 
