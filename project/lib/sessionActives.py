@@ -23,7 +23,7 @@ class SessionActives(object):
         	return enviar
 	
 	def getSessions(self, prefix_subred):
-		path = '/give?'+ prefix_subred
+		path = '/query?'+ prefix_subred
         	headers = {
 			'Content-type': 'application/json',
 			'Accept': 'application/json',
@@ -38,7 +38,7 @@ class SessionActives(object):
         	return enviar
 		
 	def stopSearch(self, prefix_subred):
-		path = '/kill?'+ prefix_subred
+		path = '/delete?'+ prefix_subred
         	headers = {
 			'Content-type': 'application/json',
 			'Accept': 'application/json',
