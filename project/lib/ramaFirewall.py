@@ -9,6 +9,10 @@ class RamaFirewall(object):
 		self.estado = estado
 		self.flagtmp = flagtmp
 		self.SubRedes = SubRedes
+		#Se agrega nuevos atributos
+		self.flagtmp_old = ""
+		self.temp_bloqueado = ""
+		self.timeHOsessions = ""
 	def carga_representativa(self):
 		return max([self.carga_ovs_intranet,self.carga_ovs_extranet])
 	
