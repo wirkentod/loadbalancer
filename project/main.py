@@ -12,22 +12,22 @@ from lib import SessionActives
 
 #iniciamos las variables globales
 
-ip_controller = '10.20.10.33'
-ovs_intranet_DPID = "00:00:ca:ef:d8:00:e7:4e"
-ovs_extranet_DPID = "00:00:ee:0b:8d:b4:21:49"
+ip_controller = '10.20.10.8'
+ovs_intranet_DPID = "00:00:06:65:9b:78:cc:4f"
+ovs_extranet_DPID = "00:00:f6:7b:24:5d:3e:4f"
 
-#Definimos la interfaz en el ovs_intranet donde se reenviaran los paquetes para la busqueda de sesiones activas
-interfaz_puerto_sessions_actives = '6'
+#Definimos la interfaz en el ovs_intranet donde se reenviaran los paquetes para la busqueda de sesiones activas al servidor SessionServer
+interfaz_puerto_sessions_actives = '3'
 #Definimos las interfaces por defecto en caso los paquetes no pertenecen a ninguna subred
-interfaz_default_ovs_intranet = '7'
-interfaz_default_ovs_extranet = '5'
+interfaz_default_ovs_intranet = '4'
+interfaz_default_ovs_extranet = '1'
 
 #Definimos las ramas correspondientes a cada Firewall
-rama1 = RamaFirewall('2','2','1','rama1','NORMAL','ESTABLE',[])
-rama2 = RamaFirewall('3','4','2','rama2','NORMAL','ESTABLE',[])
-rama3 = RamaFirewall('1','1','3','rama3','NORMAL','ESTABLE',[])
+rama1 = RamaFirewall('8','7','1','rama1','NORMAL','ESTABLE',[])
+rama2 = RamaFirewall('5','2','2','rama2','NORMAL','ESTABLE',[])
+rama3 = RamaFirewall('6','6','3','rama3','NORMAL','ESTABLE',[])
 #Rama Sensor Spare
-rama4 = RamaFirewall('4','3','4','rama4','NORMAL','ESTABLE',[])
+rama4 = RamaFirewall('2','4','4','rama4','NORMAL','ESTABLE',[])
 
 arreglo_ramas_Firewall = [rama1,rama2,rama3]
 arreglo_SubRedes = []
