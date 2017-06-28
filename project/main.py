@@ -163,6 +163,22 @@ def guardarInformacionDicts_Load_Net():
 s = sched.scheduler(time.time, time.sleep)
 def accionCadaXSegundos():
 	
+	#Actualizamos las mediciones en cada SubRed
+	dict_Flows = medirFlows_Ovs(ovs_intranet_DPID)
+	for subred in arreglo_SubRedes :
+		#values = [packet_count,byte_count,duration]
+		values = dict_Flows.get(str(subred.ip_mask))
+		subred.pps = (values[0] - subred.packetCount_old ) / (values[2] - subred.duration_old)
+		subred.bps = (values[1] - subred.bytesConsumidos_old ) * 8 / (values[2] - subred.duration_old)
+		subred.packetCount_old =  values[0]
+		subred.bytesConsumidos_old = values[1]
+		subred.duration_old = values[2]
+		
+		print "SubRed_Name: %s | key: %s | pps: %s | bps: %s " %(subred.nombre,subred.ip_mask,subred.pps,subred.bps)
+	
+	
+	print time.time()
+	
 	#Actualizamos las mediciones en cada Rama
 	for rama in arreglo_ramas_Firewall:
 		load_inst_puerto_intranet = medirBps_Ovs(rama.interfaz_puerto_ovs_intranet, 'tx', ovs_intranet_DPID)
@@ -181,22 +197,7 @@ def accionCadaXSegundos():
 			if not rama in arreglo_rama_HandOff_dst :
 				arreglo_rama_HandOff_dst.append(rama)
 		print "Rama Nombre: %s| carga_representativa: %s| Rama estado: %s| Rama flagtmp: %s | SubRedes: %s " %(rama.ramaFirewallNombre, rama.carga_representativa(), rama.estado, rama.flagtmp, rama.SubRedes)
-	
-	#Actualizamos las mediciones en cada SubRed
-	dict_Flows = medirFlows_Ovs(ovs_intranet_DPID)
-	for subred in arreglo_SubRedes :
-		#values = [packet_count,byte_count,duration]
-		values = dict_Flows.get(str(subred.ip_mask))
-		subred.pps = (values[0] - subred.packetCount_old ) / (values[2] - subred.duration_old)
-		subred.bps = (values[1] - subred.bytesConsumidos_old ) * 8 / (values[2] - subred.duration_old)
-		subred.packetCount_old =  values[0]
-		subred.bytesConsumidos_old = values[1]
-		subred.duration_old = values[2]
 		
-		print "SubRed_Name: %s | key: %s | pps: %s | bps: %s " %(subred.nombre,subred.ip_mask,subred.pps,subred.bps)
-	
-	
-	print time.time()
 
 if __name__ == '__main__':
 	#Creacion de Group entries para realizar forwarding multicast para recolectar las sesiones activas por Sub Red
