@@ -393,10 +393,8 @@ def accionCadaXSegundos():
 					Rama_src.SubRedes.remove(Sub_red_HO)
 					Rama_dst.SubRedes.append(Sub_red_HO)
 					
+					#Se BLOQUEA la rama
 					rama.estado = 'BLOQUEADO'
-					
-					#Reseteamos la subred en la busqueda de sesiones
-					sessionActives.stopSearch(output)
 					rama.temp_bloqueado = 5
 					i = i + 1
 				#else:
