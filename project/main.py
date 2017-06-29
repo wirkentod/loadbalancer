@@ -340,7 +340,7 @@ def accionCadaXSegundos():
 				
 					indice = i % cantidad_ramas_HandOff_dst
 					
-					input = rama.SubRedHO
+					input = rama.SubRedHO.ip_mask
 					res = input.split('/')
 					output_prefix = res[0] + "/" + change_mask(res[1])
 					subredparams = rama.SubRedHO.nombre + '&' + output_prefix
