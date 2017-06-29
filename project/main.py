@@ -278,7 +278,7 @@ def accionCadaXSegundos():
 			ramas_HandOff_dst_new.append(rama)
 			if rama.estado == 'CANDIDATA' and rama.flagtmp_old == 'INESTABLE':
 				#Cambiamos la forma del prefijo a formato ip/num
-				input = rama.SubRedHO
+				input = rama.SubRedHO.ip_mask
 				res = input.split('/')
 				output_prefix = res[0] + "/" + change_mask(res[1])
 				subredparams = rama.SubRedHO.nombre + '&' + output_prefix
