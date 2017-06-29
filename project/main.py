@@ -295,7 +295,7 @@ def accionCadaXSegundos():
 		
 		print "Rama Nombre: %s| carga_representativa: %s| Rama estado: %s| Rama flagtmp: %s | SubRedes: %s " %(rama.ramaFirewallNombre, rama.carga_representativa(), rama.estado, rama.flagtmp, rama.SubRedes)
 	
-	#Ordenamos los arreglos donde se almacenas las ramas 'ESTABLES' E 'INESTABLES' de forma descendente
+	#Ordenamos los arreglos donde se almacenan las ramas 'ESTABLES' E 'INESTABLES' de forma descendente
 	ramas_HandOff_src_new_descendente = sorted(ramas_HandOff_src_new, key=lambda rama: rama.carga_representativa(), reverse=True) 
 	ramas_HandOff_dst_new_ascendente = sorted(ramas_HandOff_dst_new, key=lambda rama: rama.carga_representativa(), reverse=False)
 	
@@ -305,7 +305,7 @@ def accionCadaXSegundos():
 	for rama in ramas_HandOff_src_new_descendente:
 		if rama.estado != 'BLOQUEADO':
 			if rama.estado == 'NORMAL' :
-				#Buscamos la SubRed que más se acomada para realizar el HandOff, ordenamos de manera ascendente
+				#Buscamos la SubRed que mas se acomada para realizar el HandOff, ordenamos de manera ascendente
 				SubRedes_ramas_ascendente = sorted(rama.SubRedes, key=lambda subred: subred.bps, reverse=False)
 				#Escogemos la subred de menor carga para evitar el amortiguamiento del sistema
 				sub_red_elegida = SubRedes_ramas_ascendente[0]
@@ -318,7 +318,7 @@ def accionCadaXSegundos():
 				#Insertamos un Flow Entry para generar un port mirror de la SubRed correspondiente
 				flow_mirror = {
 						'switch':ovs_intranet_DPID,
-						"name":str(subRedName) + "_mirror",
+						"name":str(sub_red_elegida.nombre) + "_mirror",
 						"cookie":"0",
 						"priority":"20",
 						"eth_type ":"0x0800",
@@ -399,7 +399,7 @@ def accionCadaXSegundos():
 					sessionActives.stopSearch(output)
 					rama.temp_bloqueado = 5
 					i = i + 1
-				else:
+				#else:
 
 if __name__ == '__main__':
 	#Creacion de Group entries para realizar forwarding multicast para recolectar las sesiones activas por Sub Red
