@@ -164,7 +164,23 @@ def guardarInformacionDicts_Load_Net():
                 dict_load_intranet[str(puerto.puertoFirewallNombre)].append(float(load_inst_puerto_intranet))
 
 def change_mask(mask):
-	if mask == "255.255.255.0":
+	if mask == "255.255.0.0":
+		result = 16
+	elif mask == "255.255.128.0":
+		result = 17
+	elif mask == "255.255.192.0":
+		result = 18
+	elif mask == "255.255.224.0":
+		result = 19
+	elif mask == "255.255.240.0":
+		result = 20
+	elif mask == "255.255.248.0":
+		result = 21
+	elif mask == "255.255.252.0":
+		result = 22
+	elif mask == "255.255.254.0":
+		result = 23
+	elif mask == "255.255.255.0":
 		result = 24
 	elif mask == "255.255.255.128":
 		result = 25
