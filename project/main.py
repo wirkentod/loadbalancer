@@ -283,8 +283,19 @@ def accionCadaXSegundos():
 		rama.carga_ovs_extranet = load_inst_puerto_extranet
 		carga_representativa = rama.carga_representativa()
 		
+		#Calcular promediador para comparar con el valor umbral
+		delta = 0.8
+                promediador = delta*float(rama.promediador_old) + (1 - delta)*float(carga_representativa)
+                rama.promediador_old = promediador
+                tiempo_carga = time.time()
+		
+		#Imprimimos los valores del promediador y la carga actual
+                file_rama = open('./resultRamas/'+str(rama.ramaFirewallNombre)+'.csv', 'a')
+                #file_rama.write('#|  X[n] - valor_representativo   |   Y[n] - promediador   |   Time    |' + '\n')
+                file_rama.write(str(carga_representativa) + ',' + str(promediador) + ',' + str(tiempo_carga)    + '\n')
+		
 		#Si pasa el umbral
-		if float(carga_representativa) > float(umbral_HandOff):
+		if float(promediador) > float(umbral_HandOff):
 			rama.flagtmp = 'INESTABLE'
 			ramas_HandOff_src_new.append(rama)
 			#if not rama in arreglo_rama_HandOff_src :
